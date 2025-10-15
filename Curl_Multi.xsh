@@ -66,9 +66,18 @@ cb_multi_socket( CURL *easy_handle, curl_socket_t s, int what, void *userptr,
 	perl_curl_multi_t *multi;
 	perl_curl_easy_t *easy;
 
+	if (userptr == NULL) 
+		return 0;
+
 	multi = (perl_curl_multi_t *) userptr;
 
+	if (multi->cb[ CB_MULTI_SOCKET ].func == NULL) 
+		return 0;
+
 	(void) curl_easy_getinfo( easy_handle, CURLINFO_PRIVATE, (void *) &easy );
+
+	if (easy == NULL) 
+		return 0;
 
 	/* $multi, $easy, $socket, $what, $socketdata, $userdata */
 	SV *args[] = {
