@@ -75,7 +75,7 @@ cb_multi_socket( CURL *easy_handle, curl_socket_t s, int what, void *userptr,
 	/* $easy can be NULL if $what == CURL_POLL_REMOVE */
 	SV *args[] = {
 		/* 0 */ SELF2PERL( multi ),
-		/* 1 */ easy ? SELF2PERL( easy ) : NULL,
+		/* 1 */ easy ? SELF2PERL( easy ) : &PL_sv_undef,
 		/* 2 */ newSVuv( s ),
 		/* 3 */ newSViv( what ),
 		/* 4 */ &PL_sv_undef
