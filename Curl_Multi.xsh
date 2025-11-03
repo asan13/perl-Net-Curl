@@ -69,11 +69,13 @@ cb_multi_socket( CURL *easy_handle, curl_socket_t s, int what, void *userptr,
 	multi = (perl_curl_multi_t *) userptr;
 
 	(void) curl_easy_getinfo( easy_handle, CURLINFO_PRIVATE, (void *) &easy );
+    
 
 	/* $multi, $easy, $socket, $what, $socketdata, $userdata */
+	/* $easy can be NULL if $what == CURL_POLL_REMOVE */
 	SV *args[] = {
 		/* 0 */ SELF2PERL( multi ),
-		/* 1 */ SELF2PERL( easy ),
+		/* 1 */ easy ? SELF2PERL( easy ) : NULL,
 		/* 2 */ newSVuv( s ),
 		/* 3 */ newSViv( what ),
 		/* 4 */ &PL_sv_undef
